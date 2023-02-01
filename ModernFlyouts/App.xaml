@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:ui2="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:localui="clr-namespace:ModernFlyouts.UI"
              xmlns:local="clr-namespace:ModernFlyouts"
              xmlns:converters="clr-namespace:ModernFlyouts.Converters"
@@ -28,8 +29,10 @@
                     </ui:ThemeResources.ThemeDictionaries>
                 </ui:ThemeResources>
                 <ui:XamlControlsResources />
+                <ui2:ThemesDictionary Theme="Light" />
+                <ui2:ControlsDictionary />
                 <ResourceDictionary Source="Styles/Button.xaml" />
-                <ResourceDictionary Source="Styles/ToggleButton.xaml" />
+                <!--<ResourceDictionary Source="Styles/ToggleButton.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
 
             <converters:IndexToVisibilityConverter x:Key="IndexToVisibilityConverter" />

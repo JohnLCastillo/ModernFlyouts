@@ -15,8 +15,7 @@
         <converters:DisplayMonitorIsCheckedConverter x:Key="DisplayMonitorIsCheckedConverter" />
     </UserControl.Resources>
     <Grid>
-        <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
-                Opacity="0.8" CornerRadius="8" />
+        <Border CornerRadius="8" BorderBrush="#FFCDCDCD" BorderThickness="1px" />
         <ItemsControl Margin="20"
                       ItemsSource="{Binding Source={x:Static display:DisplayManager.Instance}, Path=DisplayMonitors}">
             <ItemsControl.ItemsPanel>

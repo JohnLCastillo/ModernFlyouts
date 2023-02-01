@@ -3,57 +3,79 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:ModernFlyouts" xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:ModernFlyouts"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:controls="clr-namespace:ModernFlyouts.Controls"
       xmlns:toolkit="http://schemas.modernwpf.com/toolkit"
-      xmlns:utils="clr-namespace:ModernFlyouts.Utilities" xmlns:helpers="clr-namespace:ModernFlyouts.Helpers"
+      xmlns:utils="clr-namespace:ModernFlyouts.Utilities"
+      xmlns:helpers="clr-namespace:ModernFlyouts.Helpers"
       xmlns:resx="clr-namespace:ModernFlyouts.Properties"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}">
-    <controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="20,10">
-            <GroupBox Header="{x:Static resx:Strings.Settings_Behavior}">
-                <ui:SimpleStackPanel Spacing="10">
-                    <ui:ToggleSwitch Header="{x:Static resx:Strings.Settings_RunAtStartup}" IsOn="{Binding RunAtStartup}"
-                                     OnContent="{x:Static resx:Strings.Settings_On}"
-                                     OffContent="{x:Static resx:Strings.Settings_Off}" />
+      d:DesignHeight="550" d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}">
+    <ui:DynamicScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30 20">
+            <ui:CardControl Icon="Power24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_RunAtStartup}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel x:Name="stackPanel" Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="RunAtStartup">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding RunAtStartup}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="LocalLanguage24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_Language}" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.Settings_LanguageDescription}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
                     <ComboBox ItemsSource="{x:Static helpers:LocalizationHelper.SupportedLanguages}"
                               SelectedItem="{Binding Path=(helpers:LocalizationHelper.CurrentLanguage)}"
-                              MinWidth="240">
-                        <ui:ControlHelper.Header>
-                            <ui:SimpleStackPanel Orientation="Horizontal" Spacing="4"
-                                                 ToolTip="{x:Static resx:Strings.Settings_LanguageDescription}">
-                                <TextBlock Text="{x:Static resx:Strings.Settings_Language}" />
-                                <ui:FontIcon FontSize="14" Glyph="{x:Static utils:CommonGlyphs.Info}" />
-                            </ui:SimpleStackPanel>
-                        </ui:ControlHelper.Header>
-                    </ComboBox>
-                </ui:SimpleStackPanel>
-            </GroupBox>
-
-            <GroupBox Header="{x:Static resx:Strings.Settings_DefaultFlyout}">
-                <ui:SimpleStackPanel Spacing="10">
-                    <ui:RadioButtons x:Name="DefaultFlyoutSelector"
-                        Header="{x:Static resx:Strings.Settings_DefaultFlyoutDescription}"
-                        ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
-                        ItemsSource="{toolkit:EnumValues Type=local:DefaultFlyout}"
-                        SelectedItem="{Binding DefaultFlyout}" />
-                    <ui:SimpleStackPanel x:Name="WarningPanel" Spacing="10"
-                                         Visibility="{Binding ElementName=DefaultFlyoutSelector, Path=SelectedIndex,
-                                            Converter={StaticResource IndexToVisibilityConverter}}">
-                        <TextBlock Margin="0,5" Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}"
-                                   TextWrapping="Wrap" Text="{x:Static resx:Strings.Settings_DefaultFlyoutWarningMessage}" />
-                        <Button Content="{x:Static resx:Strings.ExitItemDescription}"
-                                Command="{x:Static utils:CommonCommands.ExitAppCommand}" />
-                    </ui:SimpleStackPanel>
-                </ui:SimpleStackPanel>
-            </GroupBox>
-
-            <GroupBox Header="{x:Static resx:Strings.Settings_Additional}">
-                <Button Style="{DynamicResource ButtonRevealStyle}"
-                        Content="{x:Static resx:Strings.Settings_ResetToDefaults}"
+                              d:SelectedIndex="0"
+                              MinWidth="240"/>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="DesktopCheckmark24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_DefaultFlyout}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ComboBox x:Name="DefaultFlyoutSelector"
+                              ItemsSource="{toolkit:EnumValues Type=local:DefaultFlyout}"
+                              ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
+                              SelectedItem="{Binding DefaultFlyout}"
+                              d:SelectedIndex="1"
+                              MinWidth="240"/>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="ArrowReset48" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_ResetToDefaults}" />
+                </ui:CardControl.Header>
+                <Button Content="Reset Settings"
                         Command="{x:Static utils:CommonCommands.ResetAppDataCommand}" />
-            </GroupBox>
+            </ui:CardControl>
+            <StackPanel x:Name="WarningPanel" Visibility="{Binding ElementName=DefaultFlyoutSelector, Path=SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}}">
+                <TextBlock Margin="0,10,0,20" Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}"
+                           TextWrapping="Wrap" Text="{x:Static resx:Strings.Settings_DefaultFlyoutWarningMessage}" />
+                <Button Content="{x:Static resx:Strings.ExitItemDescription}"
+                        Command="{x:Static utils:CommonCommands.ExitAppCommand}" />
+            </StackPanel>
         </StackPanel>
-    </controls:ScrollViewerEx>
+    </ui:DynamicScrollViewer>
 </Page>

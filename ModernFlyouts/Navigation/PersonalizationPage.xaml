@@ -3,77 +3,201 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:ModernFlyouts" xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:ModernFlyouts"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:ui2="http://schemas.modernwpf.com/2019"
       xmlns:toolkit="http://schemas.modernwpf.com/toolkit"
-      xmlns:controls="clr-namespace:ModernFlyouts.Controls"
-      xmlns:utils="clr-namespace:ModernFlyouts.Utilities"
       xmlns:helpers="clr-namespace:ModernFlyouts.Helpers"
       xmlns:resx="clr-namespace:ModernFlyouts.Properties"
       xmlns:localui="clr-namespace:ModernFlyouts.UI"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}">
-    <controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
+      d:DesignHeight="800" d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+    <ui:DynamicScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30 20">
+            <ui:CardControl Icon="PaintBrush24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_FlyoutTheme}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ComboBox ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
+                              ItemsSource="{toolkit:EnumValues Type=ui2:ElementTheme}"
+                              SelectedItem="{Binding UIManager.FlyoutTheme}"
+                              d:SelectedIndex="0"
+                              MinWidth="240"/>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="Color24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_AppTheme}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ComboBox ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
+                              ItemsSource="{toolkit:EnumValues Type=ui2:ElementTheme}"
+                              SelectedItem="{Binding UIManager.AppTheme}"
+                              d:SelectedIndex="0"
+                              MinWidth="240"/>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="PanelTopContract20" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_TopBarVisibility}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ComboBox ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
+                              ItemsSource="{toolkit:EnumValues Type=localui:TopBarVisibility}"
+                              SelectedItem="{Binding UIManager.TopBarVisibility}"
+                              d:SelectedIndex="0"
+                              MinWidth="240"/>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="Eye24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_FlyoutBackgroundOpacity}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Center"
+                               Padding="0 0 10 0"
+                               d:Content="100%"
+                               Content="{Binding Path=UIManager.FlyoutBackgroundOpacity, StringFormat={}{0:#0}%}" />
+                        <Slider Minimum="0" Maximum="100" HorizontalAlignment="Left"
+                            AutoToolTipPlacement="TopLeft" Width="240"
+                            IsMoveToPointEnabled="True"
+                            Value="{Binding UIManager.FlyoutBackgroundOpacity}"/>
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="ShareCloseTray24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_TrayIconEnabled}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="UIManager.TrayIconEnabled">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding UIManager.TrayIconEnabled}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="ColorFill28" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_UseColoredTrayIcon}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="UIManager.UseColoredTrayIcon">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding UIManager.UseColoredTrayIcon}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="SlideHide20" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_FlyoutAnimationEnabled}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="UIManager.FlyoutAnimationEnabled">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding UIManager.FlyoutAnimationEnabled}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="Timer24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_FlyoutTimeout}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <ui:SymbolIcon FontSize="12" Symbol="Star48" Filled="True" Padding="0,0,4,4" />
+                            <Label FontSize="12" Content="{x:Static helpers:DefaultValuesStore.RecommendedFlyoutTimeout}" />
+                        </StackPanel>
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ui:NumberBox PlaceholderText="{x:Static resx:Strings.Settings_FlyoutTimeout}"
+                                  PlaceholderEnabled="True"
+                                  HorizontalAlignment="Left" Minimum="100"
+                                  SmallChange="50" LargeChange="100" MinWidth="240"
+                                  SpinButtonPlacementMode="Inline" Value="{Binding UIManager.FlyoutTimeout}" />
+                </ui:CardControl.Content>
+            </ui:CardControl>
+        </StackPanel>
+    </ui:DynamicScrollViewer>
+    
+    <!--<controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20,10">
             <GroupBox Header="{x:Static resx:Strings.Settings_Appearance}">
-                <ui:SimpleStackPanel Spacing="10">
-                    <ui:RadioButtons Header="{x:Static resx:Strings.Settings_FlyoutTheme}"
+                <ui2:SimpleStackPanel Spacing="10">
+                    <ui2:RadioButtons Header="{x:Static resx:Strings.Settings_FlyoutTheme}"
                                      ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
-                                     ItemsSource="{toolkit:EnumValues Type=ui:ElementTheme}"
+                                     ItemsSource="{toolkit:EnumValues Type=ui2:ElementTheme}"
                                      SelectedItem="{Binding UIManager.FlyoutTheme}" />
-                    <ui:RadioButtons Header="{x:Static resx:Strings.Settings_AppTheme}"
+                    <ui2:RadioButtons Header="{x:Static resx:Strings.Settings_AppTheme}"
                                      ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
-                                     ItemsSource="{toolkit:EnumValues Type=ui:ElementTheme}"
+                                     ItemsSource="{toolkit:EnumValues Type=ui2:ElementTheme}"
                                      SelectedItem="{Binding UIManager.AppTheme}" />
-                    <ui:RadioButtons Header="{x:Static resx:Strings.Settings_TopBarVisibility}"
+                    <ui2:RadioButtons Header="{x:Static resx:Strings.Settings_TopBarVisibility}"
                                      ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
                                      ItemsSource="{toolkit:EnumValues Type=localui:TopBarVisibility}"
                                      SelectedItem="{Binding UIManager.TopBarVisibility}" />
-                    <ui:SimpleStackPanel Spacing="10" HorizontalAlignment="Left" Orientation="Horizontal">
-                        <Slider ui:ControlHelper.Header="{x:Static resx:Strings.Settings_FlyoutBackgroundOpacity}"
-                                Minimum="0" Maximum="100" HorizontalAlignment="Left"
+                    <TextBlock Text="{x:Static resx:Strings.Settings_FlyoutBackgroundOpacity}" />
+                    <ui2:SimpleStackPanel Spacing="10" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <Slider Minimum="0" Maximum="100" HorizontalAlignment="Left"
                                 AutoToolTipPlacement="TopLeft" Width="240"
                                 IsMoveToPointEnabled="True" Value="{Binding UIManager.FlyoutBackgroundOpacity}" />
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
                                    VerticalAlignment="Center" Margin="0,22,0,0">
                             <Run Text="{Binding Path=UIManager.FlyoutBackgroundOpacity, StringFormat={}{0:#0}%}" />
                         </TextBlock>
-                    </ui:SimpleStackPanel>
-                    <ui:ToggleSwitch Header="{x:Static resx:Strings.Settings_TrayIconEnabled}"
-                                     IsOn="{Binding UIManager.TrayIconEnabled}"
-                                     OnContent="{x:Static resx:Strings.Settings_On}"
-                                     OffContent="{x:Static resx:Strings.Settings_Off}" />
-                    <ui:ToggleSwitch Header="{x:Static resx:Strings.Settings_UseColoredTrayIcon}"
-                                     IsOn="{Binding UIManager.UseColoredTrayIcon}"
-                                     OnContent="{x:Static resx:Strings.Settings_On}"
-                                     OffContent="{x:Static resx:Strings.Settings_Off}"
+                    </ui2:SimpleStackPanel>
+                    <ui:ToggleSwitch Content="{x:Static resx:Strings.Settings_TrayIconEnabled}"
+                                     IsEnabled="{Binding UIManager.TrayIconEnabled}" />
+                    <ui:ToggleSwitch Content="{x:Static resx:Strings.Settings_UseColoredTrayIcon}"
+                                     IsEnabled="{Binding UIManager.UseColoredTrayIcon}"
                                      Visibility="{Binding UIManager.TrayIconEnabled,
                                         Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    <ui:ToggleSwitch Header="{x:Static resx:Strings.Settings_FlyoutAnimationEnabled}"
-                                     IsOn="{Binding UIManager.FlyoutAnimationEnabled}"
-                                     OnContent="{x:Static resx:Strings.Settings_On}"
-                                     OffContent="{x:Static resx:Strings.Settings_Off}" />
-                </ui:SimpleStackPanel>
+                    <ui:ToggleSwitch Content="{x:Static resx:Strings.Settings_FlyoutAnimationEnabled}"
+                                     IsEnabled="{Binding UIManager.FlyoutAnimationEnabled}" />
+                </ui2:SimpleStackPanel>
             </GroupBox>
 
             <GroupBox Header="{x:Static resx:Strings.Settings_Behavior}">
-                <ui:SimpleStackPanel Spacing="10">
-                    <ui:NumberBox Header="{x:Static resx:Strings.Settings_FlyoutTimeout}"
+                <ui2:SimpleStackPanel Spacing="10">
+                    <ui:NumberBox PlaceholderText="{x:Static resx:Strings.Settings_FlyoutTimeout}"
+                                  PlaceholderEnabled="True"
                                   HorizontalAlignment="Left" Minimum="100"
                                   SmallChange="50" LargeChange="100" MinWidth="240"
-                                  SpinButtonPlacementMode="Inline" Value="{Binding UIManager.FlyoutTimeout}">
-                        <ui:NumberBox.Description>
-                            <ui:SimpleStackPanel Margin="0,5,0,0" Orientation="Horizontal" Spacing="5">
-                                <Viewbox Height="16">
-                                    <Border>
-                                        <ui:SymbolIcon Symbol="SolidStar" />
-                                    </Border>
-                                </Viewbox>
-                                <TextBlock Text="{x:Static helpers:DefaultValuesStore.RecommendedFlyoutTimeout}" />
-                            </ui:SimpleStackPanel>
-                        </ui:NumberBox.Description>
-                    </ui:NumberBox>
-                </ui:SimpleStackPanel>
+                                  SpinButtonPlacementMode="Inline" Value="{Binding UIManager.FlyoutTimeout}" />
+                    <ui2:SimpleStackPanel Margin="0,5,0,0" Orientation="Horizontal" Spacing="5">
+                        <ui:SymbolIcon Symbol="Star48" Filled="True" />
+                        <TextBlock Text="{x:Static helpers:DefaultValuesStore.RecommendedFlyoutTimeout}" />
+                    </ui2:SimpleStackPanel>
+                </ui2:SimpleStackPanel>
             </GroupBox>
         </StackPanel>
-    </controls:ScrollViewerEx>
+    </controls:ScrollViewerEx>-->
 </Page>

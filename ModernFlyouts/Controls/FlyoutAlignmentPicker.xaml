@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:ui2="http://schemas.modernwpf.com/2019"
              xmlns:toolkitControls="http://schemas.modernwpf.com/toolkit/controls"
              xmlns:utils="clr-namespace:ModernFlyouts.Utilities"
              xmlns:resx="clr-namespace:ModernFlyouts.Properties"
@@ -20,50 +21,54 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Text="{x:Static resx:Strings.Settings_FlyoutAlignment}" Margin="0,0,0,10"/>
-        <toolkitControls:SimpleWrapPanel
-            Grid.Row="1" HorizontalSpacing="10" VerticalSpacing="10" Orientation="Horizontal">
+        <toolkitControls:SimpleWrapPanel Grid.Row="1" HorizontalSpacing="0" VerticalSpacing="10" Orientation="Horizontal">
             <Border Padding="5" BorderBrush="{DynamicResource SystemControlHighlightAccentBrush}"
                     VerticalAlignment="Center"
-                    BorderThickness="2" CornerRadius="{DynamicResource ControlCornerRadius}">
+                    BorderThickness="0" CornerRadius="{DynamicResource ControlCornerRadius}">
                 <Grid Height="100" Width="100">
                     <ToggleButton x:Name="TgCenter" x:FieldModifier="private"
                                   Width="30" Height="30"
                                   Padding="5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <ui:FontIcon Glyph="{x:Static utils:CommonGlyphs.Align}" FontSize="16" />
+                        <ui2:FontIcon Glyph="{x:Static utils:CommonGlyphs.Align}" FontSize="16" />
                     </ToggleButton>
                     <ToggleButton x:Name="TgLeft" x:FieldModifier="private"
                                   Width="30" Height="30"
                                   Padding="5" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <ui:FontIcon Glyph="{x:Static utils:CommonGlyphs.ChevronLeft}" FontSize="16" />
+                        <ui2:FontIcon Glyph="{x:Static utils:CommonGlyphs.ChevronLeft}" FontSize="16" />
                     </ToggleButton>
                     <ToggleButton x:Name="TgRight" x:FieldModifier="private"
                                   Width="30" Height="30"
                                   Padding="5" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <ui:FontIcon Glyph="{x:Static utils:CommonGlyphs.ChevronRight}" FontSize="16" />
+                        <ui2:FontIcon Glyph="{x:Static utils:CommonGlyphs.ChevronRight}" FontSize="16" />
                     </ToggleButton>
                     <ToggleButton x:Name="TgTop" x:FieldModifier="private"
                                   Width="30" Height="30"
                                   Padding="5" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <ui:FontIcon Glyph="{x:Static utils:CommonGlyphs.ChevronUp}" FontSize="16" />
+                        <ui2:FontIcon Glyph="{x:Static utils:CommonGlyphs.ChevronUp}" FontSize="16" />
                     </ToggleButton>
                     <ToggleButton x:Name="TgBottom" x:FieldModifier="private"
                                   Width="30" Height="30"
                                   Padding="5" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                        <ui:FontIcon Glyph="{x:Static utils:CommonGlyphs.ChevronDown}" FontSize="16" />
+                        <ui2:FontIcon Glyph="{x:Static utils:CommonGlyphs.ChevronDown}" FontSize="16" />
                     </ToggleButton>
                 </Grid>
             </Border>
-            <ui:SimpleStackPanel Spacing="10">
-                <ComboBox x:Name="CmbHorizontal" x:FieldModifier="private"
-                          ui:ControlHelper.Header="{x:Static resx:Strings.Settings_HorizontalAlignment}"
+            <StackPanel VerticalAlignment="Center" Margin="8 0 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <ui:SymbolIcon FontSize="16" Margin="0 0 5 0" Symbol="AlignCenterHorizontal24" />
+                    <ComboBox x:Name="CmbHorizontal" x:FieldModifier="private"
+                          ui2:ControlHelper.Header="{x:Static resx:Strings.Settings_HorizontalAlignment}"
                           ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
-                          Width="240" />
-                <ComboBox x:Name="CmbVertical" x:FieldModifier="private"
-                          ui:ControlHelper.Header="{x:Static resx:Strings.Settings_VerticalAlignment}"
+                          Width="110" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                    <ui:SymbolIcon FontSize="16" Margin="0 0 5 0" Symbol="AlignCenterVertical24" />
+                    <ComboBox x:Name="CmbVertical" x:FieldModifier="private"
+                          ui2:ControlHelper.Header="{x:Static resx:Strings.Settings_VerticalAlignment}"
                           ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
-                          Width="240" />
-            </ui:SimpleStackPanel>
+                          Width="110" />
+                </StackPanel>
+            </StackPanel>
         </toolkitControls:SimpleWrapPanel>
     </Grid>
 </UserControl>

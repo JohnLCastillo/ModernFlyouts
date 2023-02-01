@@ -3,7 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:ModernFlyouts" xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:ModernFlyouts"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:ui2="http://schemas.modernwpf.com/2019"
       xmlns:toolkitControls="http://schemas.modernwpf.com/toolkit/controls"
       xmlns:toolkit="http://schemas.modernwpf.com/toolkit"
       xmlns:controls="clr-namespace:ModernFlyouts.Controls"
@@ -12,81 +14,178 @@
       xmlns:resx="clr-namespace:ModernFlyouts.Properties"
       xmlns:coreui="clr-namespace:ModernFlyouts.Core.UI;assembly=ModernFlyouts.Core"
       mc:Ignorable="d"
-      d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}">
-    <controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
+      d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+    <ui:DynamicScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30 20">
+            <Label FontSize="14" Margin="0 7" Content="{x:Static resx:Strings.Settings_DisplayDescription}"/>
+            <controls:DisplayMonitorPicker Margin="0 7" PreferredDisplayMonitor="{Binding OnScreenFlyoutPreferredMonitor, Mode=TwoWay}" />
+            <ui:CardControl Icon="ArrowMove24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_FlyoutPlacement}" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.Settings_FlyoutPlacementMode}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ComboBox x:Name="PlacementModeSelector"
+                              ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
+                              ItemsSource="{toolkit:EnumValues Type=coreui:FlyoutWindowPlacementMode}"
+                              SelectedItem="{Binding UIManager.OnScreenFlyoutWindowPlacementMode}"
+                              d:SelectedIndex="0"
+                              MinWidth="240" />
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="WindowLocationTarget20" Margin="0 7" MinHeight="70"
+                            Visibility="{Binding ElementName=PlacementModeSelector, Path=SelectedIndex,
+                            Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_FlyoutAlignment}" />
+                        <Label FontSize="12" Content="Blah blah blah" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <controls:FlyoutAlignmentPicker Alignment="{Binding UIManager.OnScreenFlyoutWindowAlignment}" />
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="WindowLocationTarget20" Margin="0 7" MinHeight="70"
+                            Visibility="{Binding ElementName=PlacementModeSelector, Path=SelectedIndex,
+                            Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_FlyoutDefaultPosition}" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.Settings_AlignFlyout}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="X:" VerticalAlignment="Center" Margin="0,0,5,7" />
+                            <ui:NumberBox Margin="5,0,0,7"
+                                          Width="120"
+                                          SpinButtonPlacementMode="Inline"
+                                          Maximum="{x:Static media:BindablePoint.MaxXValue}"
+                                          Value="{Binding DefaultFlyoutPosition.X}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Y:" VerticalAlignment="Center" Margin="0,0,10,0" />
+                            <ui:NumberBox
+                                        Width="120"
+                                        SpinButtonPlacementMode="Inline"
+                                        Maximum="{x:Static media:BindablePoint.MaxYValue}"
+                                        Value="{Binding DefaultFlyoutPosition.Y}" />
+                        </StackPanel>
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="ArrowBetweenUp20" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_Appearance}" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.Settings_FlyoutExpandDirection}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ComboBox
+                        ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
+                        ItemsSource="{toolkit:EnumValues Type=coreui:FlyoutWindowExpandDirection}"
+                        SelectedItem="{Binding UIManager.OnScreenFlyoutWindowExpandDirection}"
+                        MinWidth="240" />
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="AlignStretchHorizontal20" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_Appearance}" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.Settings_FlyoutContentStackingDirection}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ComboBox
+                        ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
+                        ItemsSource="{toolkit:EnumValues Type=controls:StackingDirection}"
+                        SelectedItem="{Binding UIManager.OnScreenFlyoutContentStackingDirection}"
+                        MinWidth="240" />
+                </ui:CardControl.Content>
+            </ui:CardControl>
+        </StackPanel>
+    </ui:DynamicScrollViewer>
+    <!--<controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20,10">
             <GroupBox Header="{x:Static resx:Strings.Settings_Display}">
-                <ui:SimpleStackPanel Spacing="5">
+                <ui2:SimpleStackPanel Spacing="5">
                     <TextBlock Text="{x:Static resx:Strings.Settings_DisplayDescription}"/>
                     <controls:DisplayMonitorPicker
                         PreferredDisplayMonitor="{Binding OnScreenFlyoutPreferredMonitor, Mode=TwoWay}" />
-                </ui:SimpleStackPanel>
+                </ui2:SimpleStackPanel>
             </GroupBox>
 
             <GroupBox Header="{x:Static resx:Strings.Settings_FlyoutPlacement}">
-                <ui:SimpleStackPanel Spacing="10">
-                    <ui:RadioButtons x:Name="PlacementModeSelector"
+                <ui2:SimpleStackPanel Spacing="10">
+                    <ui2:RadioButtons x:Name="PlacementModeSelector"
                         Header="{x:Static resx:Strings.Settings_FlyoutPlacementMode}"
                         ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
                         ItemsSource="{toolkit:EnumValues Type=coreui:FlyoutWindowPlacementMode}"
                         SelectedItem="{Binding UIManager.OnScreenFlyoutWindowPlacementMode}" />
-                    <ui:SimpleStackPanel
+                    <ui2:SimpleStackPanel
                         Spacing="10"
                         Visibility="{Binding ElementName=PlacementModeSelector, Path=SelectedIndex,
                             Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=0}">
                         <controls:FlyoutAlignmentPicker Alignment="{Binding UIManager.OnScreenFlyoutWindowAlignment}" />
-                        <!--<TextBox ui:ControlHelper.Header="Margin" />-->
-                    </ui:SimpleStackPanel>
-                    <ui:SimpleStackPanel
+                        <!-\-<TextBox ui:ControlHelper.Header="Margin" />-\->
+                    </ui2:SimpleStackPanel>
+                    <ui2:SimpleStackPanel
                         Spacing="10"
                         Visibility="{Binding ElementName=PlacementModeSelector, Path=SelectedIndex,
                             Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1}">
-                        <ui:SimpleStackPanel Spacing="5">
+                        <ui2:SimpleStackPanel Spacing="5">
                             <TextBlock Text="{x:Static resx:Strings.Settings_FlyoutDefaultPosition}" />
                             <toolkitControls:SimpleWrapPanel
                                 Orientation="Horizontal"
                                 HorizontalSpacing="10"
                                 VerticalSpacing="10">
-                                <ui:SimpleStackPanel Orientation="Horizontal" Spacing="5">
+                                <ui2:SimpleStackPanel Orientation="Horizontal" Spacing="5">
                                     <TextBlock Text="X:" VerticalAlignment="Center" />
                                     <ui:NumberBox
                                         Width="240"
                                         SpinButtonPlacementMode="Inline"
                                         Maximum="{x:Static media:BindablePoint.MaxXValue}"
                                         Value="{Binding DefaultFlyoutPosition.X}" />
-                                </ui:SimpleStackPanel>
-                                <ui:SimpleStackPanel Orientation="Horizontal" Spacing="5">
+                                </ui2:SimpleStackPanel>
+                                <ui2:SimpleStackPanel Orientation="Horizontal" Spacing="5">
                                     <TextBlock Text="Y:" VerticalAlignment="Center" />
                                     <ui:NumberBox
                                         Width="240"
                                         SpinButtonPlacementMode="Inline"
                                         Maximum="{x:Static media:BindablePoint.MaxYValue}"
                                         Value="{Binding DefaultFlyoutPosition.Y}" />
-                                </ui:SimpleStackPanel>
+                                </ui2:SimpleStackPanel>
                             </toolkitControls:SimpleWrapPanel>
-                        </ui:SimpleStackPanel>
+                        </ui2:SimpleStackPanel>
                         <Button Style="{DynamicResource ButtonRevealStyle}"
                                 Content="{x:Static resx:Strings.Settings_AlignFlyout}"
                                 Command="{x:Static utils:CommonCommands.AlignOnScreenFlyoutToDefaultPosition}" />
-                    </ui:SimpleStackPanel>
-                </ui:SimpleStackPanel>
+                    </ui2:SimpleStackPanel>
+                </ui2:SimpleStackPanel>
             </GroupBox>
 
             <GroupBox Header="{x:Static resx:Strings.Settings_Appearance}">
-                <ui:SimpleStackPanel Spacing="10">
+                <ui2:SimpleStackPanel Spacing="10">
+                    <TextBlock Text="{x:Static resx:Strings.Settings_FlyoutExpandDirection}" />
                     <ComboBox
-                        ui:ControlHelper.Header="{x:Static resx:Strings.Settings_FlyoutExpandDirection}"
-                        Width="240"
                         ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
                         ItemsSource="{toolkit:EnumValues Type=coreui:FlyoutWindowExpandDirection}"
                         SelectedItem="{Binding UIManager.OnScreenFlyoutWindowExpandDirection}"/>
-                    <ui:RadioButtons
-                        ui:ControlHelper.Header="{x:Static resx:Strings.Settings_FlyoutContentStackingDirection}"
+                    <TextBlock Text="{x:Static resx:Strings.Settings_FlyoutContentStackingDirection}" />
+                    <ui2:RadioButtons
                         ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
                         ItemsSource="{toolkit:EnumValues Type=controls:StackingDirection}"
                         SelectedItem="{Binding UIManager.OnScreenFlyoutContentStackingDirection}"/>
-                </ui:SimpleStackPanel>
+                </ui2:SimpleStackPanel>
             </GroupBox>
         </StackPanel>
-    </controls:ScrollViewerEx>
+    </controls:ScrollViewerEx>-->
 </Page>
