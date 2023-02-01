@@ -3,7 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ModernFlyouts" xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:ModernFlyouts"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:ui2="http://schemas.modernwpf.com/2019"
       xmlns:rootui="clr-namespace:ModernFlyouts.UI"
       xmlns:controls="clr-namespace:ModernFlyouts.Controls"
       xmlns:toolkit="http://schemas.modernwpf.com/toolkit"
@@ -12,67 +14,74 @@
       xmlns:display="clr-namespace:ModernFlyouts.Core.Display;assembly=ModernFlyouts.Core"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}">
-    <controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="20,10">
-            <GroupBox>
-                <ui:ToggleSwitch Header="{x:Static resx:Strings.Settings_EnableModule_Brightness}"
-                                 IsOn="{Binding BrightnessFlyoutHelper.IsEnabled}"
-                                 OnContent="{x:Static resx:Strings.Settings_On}"
-                                 OffContent="{x:Static resx:Strings.Settings_Off}" />
-            </GroupBox>
-
+    <ui:DynamicScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30 20">
+            <ui:CardControl Icon="Power24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_EnableModule_Brightness}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="BrightnessFlyoutHelper.IsEnabled">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding BrightnessFlyoutHelper.IsEnabled}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <Border BorderBrush="{x:Null}" Margin="0 7" MinHeight="40">
+                <TextBlock FontSize="16" FontWeight="DemiBold" VerticalAlignment="Bottom"
+                           Text="Per-Monitor Brightness" />
+            </Border>
             <ItemsControl ItemsSource="{Binding Source={x:Static display:BrightnessManager.Instance}, Path=BrightnessControllers}"
                           IsEnabled="{Binding BrightnessFlyoutHelper.IsEnabled, Mode=OneWay}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ui:SimpleStackPanel Orientation="Vertical" Spacing="10"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
                 <ItemsControl.Resources>
                     <DataTemplate DataType="{x:Type display:BrightnessController}">
-                        <Grid HorizontalAlignment="Left" Width="300">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="48" />
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="48" />
-                            </Grid.ColumnDefinitions>
-
-                            <ui:SimpleStackPanel Orientation="Horizontal" Spacing="10"
-                                                 Grid.ColumnSpan="3">
-                                <TextBlock Text="{Binding AssociatedDisplayMonitor.Index}" />
-                                <TextBlock TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
-                                           Text="{Binding AssociatedDisplayMonitor.DisplayName}" />
-                            </ui:SimpleStackPanel>
-                            <Grid Grid.Row="1">
-                                <ui:FontIcon x:Name="BrightnessGlyph" Grid.Column="0" FontSize="16">
-                                    <ui:FontIcon.Glyph>
-                                        <Binding Path="Brightness">
-                                            <Binding.Converter>
-                                                <toolkit:DoubleToObjectConverter GreaterThan="50"
-                                                    TrueValue="{x:Static utils:CommonGlyphs.Brightness}"
-                                                    FalseValue="{x:Static utils:CommonGlyphs.LowerBrightness}" />
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </ui:FontIcon.Glyph>
-                                </ui:FontIcon>
-                            </Grid>
-
-                            <Slider x:Name="BrightnessSlider" Maximum="{Binding Maximum}"
-                                    Minimum="{Binding Minimum}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="8,0"
-                                    SmallChange="0.01" Value="{Binding Brightness}"
-                                    IsMoveToPointEnabled="True" />
-
-                            <TextBlock x:Name="textVal" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Margin="6"
-                                       Style="{DynamicResource SubtitleTextBlockStyle}"
-                                       Text="{Binding Brightness, StringFormat={}{0:#0}}" VerticalAlignment="Center" />
-                        </Grid>
+                        <ui:CardControl Icon="Desktop32" Margin="0 7" MinHeight="70">
+                            <ui:CardControl.Header>
+                                <StackPanel>
+                                    <TextBlock FontSize="16">
+                                        Monitor <Run Text="{Binding AssociatedDisplayMonitor.Index, Mode=OneWay}" />
+                                    </TextBlock>
+                                    <TextBlock FontSize="12" Opacity="0.62" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
+                                               Text="{Binding AssociatedDisplayMonitor.DisplayName}" />
+                                </StackPanel>
+                            </ui:CardControl.Header>
+                            <ui:CardControl.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon FontSize="20">
+                                        <ui:SymbolIcon.Symbol>
+                                            <Binding Path="Brightness">
+                                                <Binding.Converter>
+                                                    <toolkit:DoubleToObjectConverter GreaterThan="50"
+                                                        TrueValue="BrightnessHigh48"
+                                                        FalseValue="BrightnessLow48" />
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </ui:SymbolIcon.Symbol>
+                                    </ui:SymbolIcon>
+                                    <Slider x:Name="BrightnessSlider" Maximum="{Binding Maximum}"
+                                            Minimum="{Binding Minimum}" Grid.Column="1" Grid.Row="1"
+                                            VerticalAlignment="Center" Margin="8,0"
+                                            SmallChange="0.01" Value="{Binding Brightness}"
+                                            IsMoveToPointEnabled="True" />
+                                    <TextBlock x:Name="textVal" FontSize="16"
+                                               HorizontalAlignment="Center" Margin="6"
+                                               Style="{DynamicResource SubtitleTextBlockStyle}"
+                                               Text="{Binding Brightness, StringFormat={}{0:#0}}"
+                                               VerticalAlignment="Center" Width="30" />
+                                </StackPanel>
+                            </ui:CardControl.Content>
+                        </ui:CardControl>
                     </DataTemplate>
                 </ItemsControl.Resources>
             </ItemsControl>
         </StackPanel>
-    </controls:ScrollViewerEx>
+    </ui:DynamicScrollViewer>
 </Page>

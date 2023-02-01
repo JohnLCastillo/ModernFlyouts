@@ -3,14 +3,152 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ModernFlyouts" xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:ModernFlyouts"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:toolkit="http://schemas.modernwpf.com/toolkit"
       xmlns:controls="clr-namespace:ModernFlyouts.Controls"
       xmlns:utils="clr-namespace:ModernFlyouts.Utilities"
       xmlns:resx="clr-namespace:ModernFlyouts.Properties"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}">
-    <controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
+      d:DesignHeight="800" d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}">
+    <ui:DynamicScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30 20">
+            <ui:CardControl Icon="SpeakerSettings28" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_EnableModule_Audio}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="AudioFlyoutHelper.IsEnabled">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding AudioFlyoutHelper.IsEnabled}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="MusicNote2Play20" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="Show Media Controls" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.AudioFlyoutHelper_ShowGSMTCInVolumeFlyout}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="AudioFlyoutHelper.ShowGSMTCInVolumeFlyout">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding AudioFlyoutHelper.ShowGSMTCInVolumeFlyout}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="Speaker228" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="Show Volume Controls" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.AudioFlyoutHelper_ShowVolumeControlInGSMTCFlyout}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="AudioFlyoutHelper.ShowVolumeControlInGSMTCFlyout">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding AudioFlyoutHelper.ShowVolumeControlInGSMTCFlyout}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="AlignCenterHorizontal28" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.AudioFlyoutHelper_ThumbnailAlignment}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="UIManager.AlignGSMTCThumbnailToRight">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_Right}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Left}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding UIManager.AlignGSMTCThumbnailToRight}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="Wallpaper24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="Use Thumbnail as Background" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.AudioFlyoutHelper_UseThumbnailAsBackground}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="UIManager.UseGSMTCThumbnailAsBackground">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding UIManager.UseGSMTCThumbnailAsBackground}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="ArrowRotateClockwise24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="Orientation" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.AudioFlyoutHelper_SessionsPanelOrientation}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ComboBox x:Name="orientationCmbBox" x:FieldModifier="private"
+                              ItemTemplate="{StaticResource LocalizedEnumItemTemplate}"
+                              ItemsSource="{toolkit:EnumValues Type=Orientation}"
+                              SelectedItem="{Binding UIManager.SessionsPanelOrientation}"
+                              MinWidth="240"
+                              d:SelectedIndex="1" />
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardControl Icon="NumberSymbol28" Margin="0 7" MinHeight="70"
+                            Visibility="{Binding ElementName=orientationCmbBox, Path=SelectedIndex, Converter={StaticResource IndexToVisibilityConverter}, ConverterParameter=1}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <TextBlock FontSize="16" Text="Number of Sessions" />
+                        <Label FontSize="12" Content="{x:Static resx:Strings.AudioFlyoutHelper_MaxVerticalSessionControlsCount}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <ui:NumberBox MinWidth="240" HorizontalAlignment="Left" Minimum="1" Maximum="10" SmallChange="1" LargeChange="2"
+                                  SpinButtonPlacementMode="Inline" Value="{Binding UIManager.MaxVerticalSessionControlsCount}" />
+                </ui:CardControl.Content>
+            </ui:CardControl>
+        </StackPanel>
+    </ui:DynamicScrollViewer>
+    <!--<controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20,10">
             <GroupBox>
                 <ui:ToggleSwitch Header="{x:Static resx:Strings.Settings_EnableModule_Audio}"
@@ -58,5 +196,5 @@
                 </TabItem>
             </TabControl>
         </StackPanel>
-    </controls:ScrollViewerEx>
+    </controls:ScrollViewerEx>-->
 </Page>

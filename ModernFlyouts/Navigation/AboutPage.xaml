@@ -3,35 +3,58 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:ModernFlyouts" xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:ModernFlyouts"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:controls="clr-namespace:ModernFlyouts.Controls"
       xmlns:utils="clr-namespace:ModernFlyouts.Utilities"
       xmlns:resx="clr-namespace:ModernFlyouts.Properties"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800">
-    <controls:ScrollViewerEx>
-        <ui:SimpleStackPanel Spacing="10" Margin="20">
-            <TextBlock FontWeight="SemiBold" Style="{DynamicResource TitleTextBlockStyle}"
-                       Text="{x:Static local:Program.AppName}" />
-            <Image Source="/Assets/Images/ModernFlyouts_128.png" HorizontalAlignment="Left" Height="128" />
-            <TextBlock TextWrapping="Wrap" Text="{x:Static resx:Strings.About_AppDescription}" />
-            <TextBlock TextWrapping="Wrap" FontWeight="Bold" FontStyle="Italic" Text="{x:Static resx:Strings.About_FileABug}" />
-            <TextBlock>
-                <Run Text="{x:Static resx:Strings.About_Version}" />
-                <Bold>
-                    <Run Text="{x:Static local:Program.AppVersion}" />
-                </Bold>
-            </TextBlock>
-            <ui:HyperlinkButton Content="{x:Static resx:Strings.About_GitHub}"
-                                NavigateUri="https://github.com/ModernFlyouts-Community/ModernFlyouts" />
-            <ui:HyperlinkButton Content="{x:Static resx:Strings.About_Contributors}"
-                                NavigateUri="https://github.com/ModernFlyouts-Community/ModernFlyouts/graphs/contributors" />
-            <ui:HyperlinkButton Content="{x:Static resx:Strings.About_Dependencies}"
-                                NavigateUri="https://github.com/ModernFlyouts-Community/ModernFlyouts/network/dependencies" />
-            <ui:HyperlinkButton Content="{x:Static resx:Strings.About_OpenNewIssue}"
-                                NavigateUri="https://github.com/ModernFlyouts-Community/ModernFlyouts/issues/new/choose" />
-            <Button Style="{DynamicResource ButtonRevealStyle}"
-                    Content="{x:Static resx:Strings.About_RateAndReview}" Click="RateAndReviewButton_Click" />
-        </ui:SimpleStackPanel>
-    </controls:ScrollViewerEx>
+      d:DesignHeight="800" d:DesignWidth="800">
+    <ui:DynamicScrollViewer>
+        <StackPanel Margin="30 20">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                <Image Source="/Assets/Images/ModernFlyouts_128.png"
+                       HorizontalAlignment="Left" Height="128" Margin="0,0,20,0" />
+                <TextBlock VerticalAlignment="Center" FontWeight="SemiBold"
+                           FontSize="40" Text="{x:Static local:Program.AppName}" />
+            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap"
+                           Text="{x:Static resx:Strings.About_AppDescription}"
+                           FontSize="14" VerticalAlignment="Center" />
+                <ui:InfoBar Grid.Row="0" Grid.Column="1" Title="Did you find a bug?"
+                            Message="{x:Static resx:Strings.About_FileABug}" IsClosable="False"
+                            IsOpen="True" Margin="10,0,0,10" />
+                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="14" VerticalAlignment="Center">
+                    <Run Text="{x:Static resx:Strings.About_Version}" />
+                    <Bold>
+                        <Run Text="{x:Static local:Program.AppVersion}" />
+                    </Bold>
+                </TextBlock>
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,10">
+                    <ui:Hyperlink Content="{x:Static resx:Strings.About_GitHub}"
+                                  NavigateUri="https://github.com/ModernFlyouts-Community/ModernFlyouts" />
+                    <ui:Hyperlink Content="{x:Static resx:Strings.About_Contributors}"
+                                  NavigateUri="https://github.com/ModernFlyouts-Community/ModernFlyouts/graphs/contributors" />
+                    <ui:Hyperlink Content="{x:Static resx:Strings.About_Dependencies}"
+                                  NavigateUri="https://github.com/ModernFlyouts-Community/ModernFlyouts/network/dependencies" />
+                </StackPanel>
+                <ui:Anchor Grid.Row="2" Grid.Column="1" Content="{x:Static resx:Strings.About_OpenNewIssue}"
+                           NavigateUri="https://github.com/ModernFlyouts-Community/ModernFlyouts/issues/new/choose"
+                           Icon="Bug24" />
+                <ui:Button Grid.Row="2" Grid.Column="0" Content="{x:Static resx:Strings.About_RateAndReview}"
+                           Click="RateAndReviewButton_Click"
+                           Icon="StarAdd28" />
+            </Grid>
+        </StackPanel>
+    </ui:DynamicScrollViewer>
 </Page>

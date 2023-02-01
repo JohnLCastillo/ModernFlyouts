@@ -3,30 +3,49 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:ModernFlyouts" xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:ModernFlyouts"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:controls="clr-namespace:ModernFlyouts.Controls"
-      xmlns:utils="clr-namespace:ModernFlyouts.Utilities"
+      xmlns:toolkit="http://schemas.modernwpf.com/toolkit"
       xmlns:resx="clr-namespace:ModernFlyouts.Properties"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800" DataContext="{x:Static local:FlyoutHandler.Instance}">
-    <controls:ScrollViewerEx VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="20,10">
-            <GroupBox>
-                <ui:ToggleSwitch Header="{x:Static resx:Strings.Settings_EnableModule_LockKeys}"
-                                 IsOn="{Binding LockKeysFlyoutHelper.IsEnabled}"
-                                 OnContent="{x:Static resx:Strings.Settings_On}"
-                                 OffContent="{x:Static resx:Strings.Settings_Off}" />
-            </GroupBox>
-
-            <GroupBox IsEnabled="{Binding LockKeysFlyoutHelper.IsEnabled, Mode=OneWay}"
-                      Header="{x:Static resx:Strings.LockKeysFlyoutHelper_SelectKeyDescription}">
-                <ui:SimpleStackPanel Spacing="10">
-                    <CheckBox Content="{x:Static resx:Strings.LockKeysFlyoutHelper_CapsLock}" IsChecked="{Binding LockKeysFlyoutHelper.CapsLockEnabled}" />
-                    <CheckBox Content="{x:Static resx:Strings.LockKeysFlyoutHelper_NumLock}" IsChecked="{Binding LockKeysFlyoutHelper.NumLockEnabled}" />
-                    <CheckBox Content="{x:Static resx:Strings.LockKeysFlyoutHelper_ScrollLock}" IsChecked="{Binding LockKeysFlyoutHelper.ScrollLockEnabled}" />
-                    <CheckBox Content="{x:Static resx:Strings.LockKeysFlyoutHelper_Insert}" IsChecked="{Binding LockKeysFlyoutHelper.InsertEnabled}" />
-                </ui:SimpleStackPanel>
-            </GroupBox>
+    <ui:DynamicScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30 20">
+            <ui:CardControl Icon="Power24" Margin="0 7" MinHeight="70">
+                <ui:CardControl.Header>
+                    <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_EnableModule_LockKeys}" />
+                </ui:CardControl.Header>
+                <ui:CardControl.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 10 0" FontSize="15">
+                            <Binding Path="LockKeysFlyoutHelper.IsEnabled">
+                                <Binding.Converter>
+                                    <toolkit:BoolToObjectConverter
+                                        TrueValue="{x:Static resx:Strings.Settings_On}"
+                                        FalseValue="{x:Static resx:Strings.Settings_Off}" />
+                                </Binding.Converter>
+                            </Binding>
+                        </Label>
+                        <ui:ToggleSwitch IsChecked="{Binding LockKeysFlyoutHelper.IsEnabled}" />
+                    </StackPanel>
+                </ui:CardControl.Content>
+            </ui:CardControl>
+            <ui:CardExpander IsEnabled="{Binding LockKeysFlyoutHelper.IsEnabled, Mode=OneWay}"
+                             Margin="0 7">
+                <ui:CardExpander.Header>
+                    <TextBlock FontSize="16"
+                               Text="{x:Static resx:Strings.LockKeysFlyoutHelper_SelectKeyDescription}" />
+                </ui:CardExpander.Header>
+                <ui:CardExpander.Content>
+                    <StackPanel>
+                        <CheckBox Content="{x:Static resx:Strings.LockKeysFlyoutHelper_CapsLock}" IsChecked="{Binding LockKeysFlyoutHelper.CapsLockEnabled}" />
+                        <CheckBox Content="{x:Static resx:Strings.LockKeysFlyoutHelper_NumLock}" IsChecked="{Binding LockKeysFlyoutHelper.NumLockEnabled}" />
+                        <CheckBox Content="{x:Static resx:Strings.LockKeysFlyoutHelper_ScrollLock}" IsChecked="{Binding LockKeysFlyoutHelper.ScrollLockEnabled}" />
+                        <CheckBox Content="{x:Static resx:Strings.LockKeysFlyoutHelper_Insert}" IsChecked="{Binding LockKeysFlyoutHelper.InsertEnabled}" />
+                    </StackPanel>
+                </ui:CardExpander.Content>
+            </ui:CardExpander>
         </StackPanel>
-    </controls:ScrollViewerEx>
+    </ui:DynamicScrollViewer>
 </Page>

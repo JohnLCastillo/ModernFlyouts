@@ -24,7 +24,20 @@
         </Grid.RowDefinitions>
         <ui:NavigationView
             x:Name="NavView" IsTabStop="False" IsPaneOpen="True" IsPaneToggleVisible="False"
-            OpenPaneLength="224" PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" Grid.Row="1">
+            OpenPaneLength="200" PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" Grid.Row="1">
+            <ui:NavigationView.Header>
+                <ui:NavigationViewBreadcrumb
+                    Margin="30,30,0,0"
+                    FontSize="28"
+                    FontWeight="DemiBold" />
+            </ui:NavigationView.Header>
+            <ui:NavigationView.AutoSuggestBox>
+                <ui:AutoSuggestBox
+                    Margin="8,8,8,16"
+                    IconPlacement="Right"
+                    PlaceholderEnabled="True"
+                    PlaceholderText="Search" />
+            </ui:NavigationView.AutoSuggestBox>
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem Content="{x:Static resx:Strings.GeneralSettings}" TargetPageType="{ x:Type nav:GeneralSettingsPage }">
                     <ui:NavigationViewItem.Icon>
@@ -41,31 +54,31 @@
                         <ui:SymbolIcon Symbol="SlideLayout24" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItemHeader Text="{x:Static resx:Strings.Settings_Modules}" />
+                <!--<ui:NavigationViewItemHeader Text="{x:Static resx:Strings.Settings_Modules}" Margin="10,12,0,0" />-->
                 <ui:NavigationViewItemSeparator />
-                <ui:NavigationViewItem Content="{x:Static resx:Strings.Settings_Modules_Audio}" Tag="audio_module">
+                <ui:NavigationViewItem Content="{x:Static resx:Strings.Settings_Modules_Audio}" TargetPageType="{ x:Type nav:AudioModulePage }">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Speaker248" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="{x:Static resx:Strings.Settings_Modules_Brightness}" Tag="brightness_module">
+                <ui:NavigationViewItem Content="{x:Static resx:Strings.Settings_Modules_Brightness}" TargetPageType="{ x:Type nav:BrightnessModulePage }">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="BrightnessHigh48" Filled="True" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="{x:Static resx:Strings.Settings_Modules_Airplane}" Tag="airplane_mode_module">
+                <ui:NavigationViewItem Content="{x:Static resx:Strings.Settings_Modules_Airplane}" TargetPageType="{ x:Type nav:AirplaneModeModulePage }">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Airplane24" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="{x:Static resx:Strings.Settings_Modules_LockKeys}" Tag="lock_keys_module">
+                <ui:NavigationViewItem Content="{x:Static resx:Strings.Settings_Modules_LockKeys}" TargetPageType="{ x:Type nav:LockKeysModulePage }">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="LockClosed32" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.FooterMenuItems>
-                <ui:NavigationViewItem Content="{x:Static resx:Strings.About}" Tag="about">
+                <ui:NavigationViewItem Content="{x:Static resx:Strings.About}" TargetPageType="{ x:Type nav:AboutPage }">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Info28" />
                     </ui:NavigationViewItem.Icon>
@@ -97,7 +110,7 @@
         </Grid>-->
         </ui:NavigationView>
         <ui:TitleBar
-            Title="{x:Static resx:Strings.SettingsItem}"
+            Title="ModernFlyouts Settings"
             Grid.Row="0"
             Icon="pack://application:,,,/Assets/Logo.ico" />
     </Grid>

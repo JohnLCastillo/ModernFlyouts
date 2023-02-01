@@ -22,7 +22,7 @@
                     <TextBlock FontSize="16" Text="{x:Static resx:Strings.Settings_RunAtStartup}" />
                 </ui:CardControl.Header>
                 <ui:CardControl.Content>
-                    <StackPanel x:Name="stackPanel" Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
                         <Label Margin="0 0 10 0" FontSize="15">
                             <Binding Path="RunAtStartup">
                                 <Binding.Converter>
